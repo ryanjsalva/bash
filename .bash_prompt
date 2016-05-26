@@ -41,14 +41,21 @@
 #   Change Prompt
 #   ------------------------------------------------------------
 
+
     function my_prompt(){
         NODEV=`node --version`
         NVMV="[node:$NODEV]"
 
         GIT=''
+        DIRTY=''
         BRANCH=`git branch 2> /dev/null | grep \* | awk '{print $2}'`
+        STATUS=$(git status --porcelain 2> /dev/null)
+        if [[ "$status" != "" ]]; then
+            DIRTY='🔥'
+        fi
+
         if [[ "$BRANCH" != "" ]]; then
-        GIT="[git:$BRANCH]" 
+            GIT="[git:$BRANCH$DIRTY]" 
         fi
         printf "\n$txtred$PWD $txtwht$NVMV $GIT$txtrst\n"
     }
